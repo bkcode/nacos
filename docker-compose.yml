@@ -4,58 +4,41 @@ services:
   nacos:
     image: nacos/nacos-server:v2.4.3
     container_name: nacos
+    network_mode: host
     environment:
       - MODE=standalone
-    ports:
-      - "192.168.1.31:8848:8848"
     volumes:
       - ./nacos/logs:/home/nacos/logs
-    networks:
-      - appnet
 
   redis:
     image: redis:7.4.4
     container_name: redis
-    ports:
-      - "6379:6379"
+    network_mode: host
     volumes:
       - ./redis/data:/data
-    networks:
-      - appnet
 
   mysql:
     image: mysql:8.4.5
     container_name: mysql
+    network_mode: host
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
-    ports:
-      - "3306:3306"
     volumes:
       - ./mysql/data:/var/lib/mysql
-    networks:
-      - appnet
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+    network_mode: host
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
     volumes:
       - ./rabbitmq/data:/var/lib/rabbitmq
-    networks:
-      - appnet
 
   nexus:
     image: sonatype/nexus3
     container_name: nexus3
-    ports:
-      - "192.168.1.251:8081:8081"
+    network_mode: host
     volumes:
       - ./nexus-data:/nexus-data
-    networks:
-      - appnet
-
-networks:
-  appnet:
-    driver: bridge
