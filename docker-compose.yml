@@ -14,8 +14,7 @@ services:
     image: redis:7.4.4
     container_name: redis
     network_mode: host
-    environment:
-      - REDIS_PASSWORD=
+    command: redis-server --requirepass redis
     volumes:
       - ./redis/data:/data
 
